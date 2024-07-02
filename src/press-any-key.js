@@ -4,10 +4,10 @@ const readline = require("readline");
 /**
  * A "press any key to continue..." prompt.
  */
-class AnyKeyPrompt extends Prompt {
-    constructor(message) {
-        super();
-        this.message = message;
+class PressAnyKey extends Prompt {
+    constructor(options) {
+        super(options);
+        this.message = options.message;
     }
 
     async run() {
@@ -24,4 +24,4 @@ class AnyKeyPrompt extends Prompt {
     }
 }
 
-module.exports = AnyKeyPrompt;
+module.exports = PressAnyKey;
