@@ -10,9 +10,9 @@ const GivenOrValidInput = require("./given-or-valid-input");
 class Enquirer extends Enquirer_ {
     constructor(options, answers) {
         super(options, answers);
-        this.register("press-any-key", PressAnyKey);
-        this.register("given-or-valid-input", GivenOrValidInput);
-        this.register("given-or-select", GivenOrSelect);
+        this.register("plus:press-any-key", PressAnyKey);
+        this.register("plus:given-or-valid-input", GivenOrValidInput);
+        this.register("plus:given-or-select", GivenOrSelect);
     }
 }
 

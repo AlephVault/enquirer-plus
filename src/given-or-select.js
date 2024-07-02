@@ -25,7 +25,7 @@ class GivenOrSelect extends enquirer.Select {
             return given !== o && given !== o.name;
         })) {
             if (options.onInvalidGiven) {
-                options.onInvalidGiven();
+                options.onInvalidGiven(given);
             }
             this._given = undefined;
         }

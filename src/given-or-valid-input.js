@@ -16,7 +16,7 @@ class GivenOrValidInput extends Prompt {
         this._nonInteractive = options.nonInteractive;
         if (!this._validate(this._given)) {
             if (options.onInvalidGiven) {
-                options.onInvalidGiven();
+                options.onInvalidGiven(this._given);
             }
             this._given = undefined;
         }
