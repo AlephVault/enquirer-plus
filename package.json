@@ -1,0 +1,28 @@
+{
+  "name": "enquirer-plus",
+  "version": "1.0.0",
+  "description": "Extensions over the enquirer library with some extended \"maybe-interactive\" prompts and new interaction types as well.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Tests are not implemented for this package\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlephVault/enquirer-plus.git"
+  },
+  "keywords": [
+    "enquirer",
+    "input",
+    "plus",
+    "extensions"
+  ],
+  "author": "Luis Masuelli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlephVault/enquirer-plus/issues"
+  },
+  "homepage": "https://github.com/AlephVault/enquirer-plus#readme",
+  "dependencies": {
+    "enquirer": "^2.3.0"
+  }
+}
