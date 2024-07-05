@@ -27,7 +27,7 @@ class GivenOrValidInput extends Prompt {
      * @returns {Promise<*>} The chosen option (async function).
      */
     async run() {
-        if (!(await this._validate(this._given))) {
+        if (this._given !== undefined && !(await this._validate(this._given))) {
             if (this._onInvalidGiven) {
                 await this._onInvalidGiven(this._given);
             }

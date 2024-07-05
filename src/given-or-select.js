@@ -35,7 +35,7 @@ class GivenOrSelect extends enquirer.Select {
      * @returns {Promise<*>} The chosen option (async function).
      */
     async run() {
-        if (this._choices.every((o) => {
+        if (this._given !== undefined && this._choices.every((o) => {
             return this._given !== o && this._given !== o.name;
         })) {
             if (this._onInvalidGiven) {
