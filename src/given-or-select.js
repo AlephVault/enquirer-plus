@@ -12,17 +12,19 @@ class GivenOrSelect extends enquirer.Select {
      * Takes and validates the given value, and also the
      * nonInteractive flag to be used to raise errors when
      * the run() method becomes interactive.
-     * @param options The options. The new ones are:
-     *   given, onInvalidGiven, nonInteractive.
+     * @param given The given value (to use, if valid).
+     * @param onInvalidGiven What to do when the given value
+     * is invalid, prior to launching the interaction.
+     * @param nonInteractive Whether to raise an error when
+     * becoming interactive.
+     * @param options More options.
      */
-    constructor(options) {
-        const given = options.given;
-        const nonInteractive = options.nonInteractive;
+    constructor({given, nonInteractive, onInvalidGiven, ...options}) {
         super(options);
         this._given = given;
         this._nonInteractive = nonInteractive;
         this._choices = options.choices;
-        this._onInvalidGiven = options._onInvalidGiven;
+        this._onInvalidGiven = onInvalidGiven || ((v) => `Invalid input: ${v}`);
     }
 
     /**

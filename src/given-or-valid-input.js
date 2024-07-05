@@ -4,17 +4,30 @@ const {checkNotInteractive} = require("./common");
 /**
  * An input that takes a given value and/or asks and
  * validates the input until a valid value is given.
+ * It takes an optional given value and a validation
+ * criterion. If the given value is valid, it is then
+ * returned. Otherwise, the input will run.
  */
-class GivenOrValidInput extends Prompt {
-    constructor(options) {
+class GivenOrValidInput extends Input {
+    /**
+     *
+     * @param validate The validation criterion.
+     * @param given The given value.
+     * @param onInvalidGiven What to do when the given
+     * value is invalid, prior to launching the interaction.
+     * @param makeInvalidInputMessage A rendering for the
+     * invalid value.
+     * @param nonInteractive Whether to raise an error when
+     * becoming interactive.
+     * @param options More options.
+     */
+    constructor({validate, onInvalidGiven, makeInvalidInputMessage, given, nonInteractive, ...options}) {
         super(options);
-        this._forwardOptions = options;
-        const validate = options.validate; // An async function (v:string) => Promise<boolean>, or a regex
-        this._onInvalidGiven = options.onInvalidGiven; // An async function (v:string) => Promise<void>.
+        this._onInvalidGiven = onInvalidGiven; // An async function (v:string) => Promise<void>.
         this._validate = validate instanceof RegExp ? (v) => validate.test(v) : validate;
-        this._makeInvalidInputMessage = options.makeInvalidInputMessage || ((v) => `Invalid input: ${v}`);
-        this._given = options.given;
-        this._nonInteractive = options.nonInteractive;
+        this._makeInvalidInputMessage = makeInvalidInputMessage || ((v) => `Invalid input: ${v}`);
+        this._given = given.toString();
+        this._nonInteractive = nonInteractive;
     }
 
     /**
@@ -39,7 +52,7 @@ class GivenOrValidInput extends Prompt {
         }
         checkNotInteractive(!!this._nonInteractive);
         while(true) {
-            const value = await new Input(this._forwardOptions).run();
+            const value = await super.run();
             if (await this._validate(value)) {
                 return value;
             }
