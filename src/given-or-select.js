@@ -21,14 +21,8 @@ class GivenOrSelect extends enquirer.Select {
         super(options);
         this._given = given;
         this._nonInteractive = nonInteractive;
-        if (options.choices.every((o) => {
-            return given !== o && given !== o.name;
-        })) {
-            if (options.onInvalidGiven) {
-                options.onInvalidGiven(given);
-            }
-            this._given = undefined;
-        }
+        this._choices = options.choices;
+        this._onInvalidGiven = options._onInvalidGiven;
     }
 
     /**
@@ -41,6 +35,15 @@ class GivenOrSelect extends enquirer.Select {
      * @returns {Promise<*>} The chosen option (async function).
      */
     async run() {
+        if (this._choices.every((o) => {
+            return this._given !== o && this._given !== o.name;
+        })) {
+            if (this._onInvalidGiven) {
+                await this._onInvalidGiven(this._given);
+            }
+            this._given = undefined;
+        }
+
         if (this._given !== undefined) {
             return this._given;
         }

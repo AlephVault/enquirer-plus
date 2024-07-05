@@ -62,6 +62,7 @@ Registered as `plus:given-or-select`, it allows users to perform the following f
 1. If `given` is set, then it'll be validated against the given Select options.
    1. If it is among them, then it returns directly and does not render the select prompt.
    2. Otherwise, if `onInvalidGiven` is set, then it executes it and continues to the next step.
+      1. It can be an `async` (promise-returning) function. 
 2. If `nonInteractive` is set and true-like, then an error is raised telling that the action became interactive.
 3. Finally, executes the regular `Select` prompt.
    1. The options that are passed come from the same `options` object given to this prompt, so use the same options
@@ -72,9 +73,11 @@ Registered as `plus:given-or-valid-input`, it allows users to perform the follow
 
 1. `validate` must be set as a `(v:string) => boolean` function that tells whether the input is valid, or a regular
    expression for the same purpose.
+   1. It can be an `async` (promise-returning) function.
 2. `given` is optional. If a value is defined there, then it will be checked against the `validate` criterion. If
    it passes the validation, then the same given value is returned with no further interaction. Otherwise, if the
    `onInvalidGiven` key is sey, then it will be expected as a function and invoked and the execution will continue.
+   1. `onInvalidGiven` can be an `async` (promise-returning) function.
 3. If `nonInteractive` is set and true-like, then an error is raised telling that the action became interactive.
 4. Finally, executes the regular `Input` prompt in a loop until the input value passes the `validate` criterion.
    1. The options that are passed come from the same `options` object given to this prompt, so use the same options
