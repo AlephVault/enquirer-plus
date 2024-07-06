@@ -26,7 +26,7 @@ class GivenOrValidInput extends Input {
         this._onInvalidGiven = onInvalidGiven; // An async function (v:string) => Promise<void>.
         this._validate = validate instanceof RegExp ? (v) => validate.test(v) : validate;
         this._makeInvalidInputMessage = makeInvalidInputMessage || ((v) => `Invalid input: ${v}`);
-        this._given = given.toString();
+        this._given = (given !== undefined && given !== null) ? given.toString() : given;
         this._nonInteractive = nonInteractive;
     }
 

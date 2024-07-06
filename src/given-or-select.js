@@ -21,7 +21,7 @@ class GivenOrSelect extends enquirer.Select {
      */
     constructor({given, nonInteractive, onInvalidGiven, ...options}) {
         super(options);
-        this._given = given;
+        this._given = (given !== undefined && given !== null) ? given.toString() : given;
         this._nonInteractive = nonInteractive;
         this._choices = options.choices;
         this._onInvalidGiven = onInvalidGiven || ((v) => `Invalid input: ${v}`);
