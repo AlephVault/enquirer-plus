@@ -8,7 +8,7 @@ const {checkNotInteractive} = require("./common");
  * criterion. If the given value is valid, it is then
  * returned. Otherwise, the input will run.
  */
-class GivenOrValidInput extends Input {
+class GivenOrValidInput extends Prompt {
     /**
      *
      * @param validate The validation criterion.
@@ -23,6 +23,7 @@ class GivenOrValidInput extends Input {
      */
     constructor({validate, onInvalidGiven, makeInvalidInputMessage, given, nonInteractive, ...options}) {
         super(options);
+        this._forwardedOptions = options;
         this._onInvalidGiven = onInvalidGiven; // An async function (v:string) => Promise<void>.
         this._validate = validate instanceof RegExp ? (v) => validate.test(v) : validate;
         this._makeInvalidInputMessage = makeInvalidInputMessage || ((v) => `Invalid input: ${v}`);
@@ -48,16 +49,26 @@ class GivenOrValidInput extends Input {
         }
 
         if (this._given !== undefined) {
-            return this._given;
+            this.value = this._given;
+            return this.submit();
         }
         checkNotInteractive(!!this._nonInteractive);
         while(true) {
-            const value = await super.run();
+            const value = await new Input(this._forwardedOptions).run();
             if (await this._validate(value)) {
-                return value;
+                this.value = value;
+                return this.submit();
             }
-            console.log(this._makeInvalidInputMessage(value));
+            console.error(this._makeInvalidInputMessage(value));
         }
+    }
+
+    render() {
+        // Minimal render implementation
+        if (this.state.submitted) return;
+        console.clear();
+        console.log(this.message);
+        if (this.state.input) console.log(this.state.input);
     }
 }
 
