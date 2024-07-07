@@ -56,7 +56,7 @@ class GivenOrValidInput extends Input {
             if (await this._validate(value)) {
                 return value;
             }
-            console.error(this._makeInvalidInputMessage(value));
+            console.log("log:", this._makeInvalidInputMessage(value));
         }
     }
 }
