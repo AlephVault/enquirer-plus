@@ -1,6 +1,6 @@
 {
   "name": "enquirer-plus",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Extensions over the enquirer library with some extended \"maybe-interactive\" prompts and new interaction types as well.",
   "main": "src/index.js",
   "scripts": {
