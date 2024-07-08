@@ -82,3 +82,13 @@ Registered as `plus:given-or-valid-input`, it allows users to perform the follow
 4. Finally, executes the regular `Input` prompt in a loop until the input value passes the `validate` criterion.
    1. The options that are passed come from the same `options` object given to this prompt, so use the same options
       you use for `Input`.
+
+## GivenOrValidNumberInput
+Registered as `plus:given-or-valid-number-input`, it allows users to perform an input flow considering all the
+same things in the previous section, but:
+
+1. The `validate` will be given. It will parse only _zero/positive_ numbers according to some configurations:
+   1. If `integerOnly` option is set, only integer numbers will be allowed.
+   2. If `allowHex` option is set, hexadecimal numbers will be alternatively accepted (as integers).
+
+This input is intended for numbers (not for hexadecimal-only inputs, for example) in particular.
