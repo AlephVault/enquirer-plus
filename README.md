@@ -92,3 +92,9 @@ same things in the previous section, but:
    2. If `allowHex` option is set, hexadecimal numbers will be alternatively accepted (as integers).
 
 This input is intended for numbers (not for hexadecimal-only inputs, for example) in particular.
+
+## GivenOrBooleanSelect
+Registered as `plus:given-or-boolean-select`, it allows users to ask a yes/no questions.
+
+1. The `yes` and `no` options are configurable labels.
+2. The result is a boolean telling whether the first option (yes) was picked.

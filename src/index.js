@@ -3,6 +3,7 @@ const PressAnyKey = require("./press-any-key");
 const GivenOrSelect = require("./given-or-select");
 const GivenOrValidInput = require("./given-or-valid-input");
 const GivenOrValidNumberInput = require("./given-or-valid-number-input");
+const GivenOrBooleanSelect = require("./given-or-boolean-select");
 
 /**
  * This is an extended Enquirer class, which takes the
@@ -15,6 +16,7 @@ class Enquirer extends Enquirer_ {
         this.register("plus:given-or-valid-input", GivenOrValidInput);
         this.register("plus:given-or-valid-number-input", GivenOrValidNumberInput);
         this.register("plus:given-or-select", GivenOrSelect);
+        this.register("plus:given-or-boolean-select", GivenOrBooleanSelect);
     }
 }
 
