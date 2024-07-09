@@ -5,7 +5,7 @@ Extensions over the enquirer library with some extended "maybe-interactive" prom
 Run this command to install it from NPM:
 
 ```shell
-npm install enquirer-plus@^1.0.6
+npm install enquirer-plus@^1.0.9
 ```
 
 # Usage
