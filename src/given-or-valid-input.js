@@ -50,14 +50,16 @@ class GivenOrValidInput extends Prompt {
 
         if (this._given !== undefined) {
             this.value = this._given;
-            return this.submit();
+            await this.submit();
+            return this.value;
         }
         checkNotInteractive(!!this._nonInteractive);
         while(true) {
             const value = await new Input(this._forwardedOptions).run();
             if (await this._validate(value)) {
                 this.value = value;
-                return this.submit();
+                await this.submit();
+                return this.value;
             }
             console.error(this._makeInvalidInputMessage(value));
         }
