@@ -62,4 +62,22 @@ class GivenOrBaseTuplePrompt extends Prompt {
     async render() {}
 }
 
-module.exports = GivenOrBaseTuplePrompt;
+/**
+ * This prompt is a tuple prompt which receives its applier
+ * as an argument.
+ */
+class GivenOrTuplePrompt extends GivenOrBaseTuplePrompt {
+    constructor({applier, ...options}) {
+        super(options);
+        if (typeof applier !== "function") {
+            throw new Error("The applier must be a function");
+        }
+        this._applier = applier;
+    }
+
+    _apply(index, given) {
+        return this._applier(index, given);
+    }
+}
+
+module.exports = {GivenOrBaseTuplePrompt, GivenOrTuplePrompt};

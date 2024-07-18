@@ -106,4 +106,22 @@ class GivenOrBaseArrayPrompt extends Prompt {
     async render() {}
 }
 
-module.exports = GivenOrBaseArrayPrompt;
+/**
+ * This prompt is an array prompt which receives its applier
+ * as an argument.
+ */
+class GivenOrArrayPrompt extends GivenOrBaseArrayPrompt {
+    constructor({applier, ...options}) {
+        super(options);
+        if (typeof applier !== "function") {
+            throw new Error("The applier must be a function");
+        }
+        this._applier = applier;
+    }
+
+    _apply(index, given) {
+        return this._applier(index, given);
+    }
+}
+
+module.exports = {GivenOrBaseArrayPrompt, GivenOrArrayPrompt};

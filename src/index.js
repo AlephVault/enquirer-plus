@@ -4,8 +4,8 @@ const GivenOrSelect = require("./given-or-select");
 const GivenOrValidInput = require("./given-or-valid-input");
 const GivenOrValidNumberInput = require("./given-or-valid-number-input");
 const GivenOrBooleanSelect = require("./given-or-boolean-select");
-const GivenOrBaseArrayPrompt = require("./given-or-array-prompt");
-const GivenOrBaseTuplePrompt = require("./given-or-tuple-prompt");
+const {GivenOrBaseArrayPrompt, GivenOrArrayPrompt} = require("./given-or-array-prompt");
+const {GivenOrBaseTuplePrompt, GivenOrTuplePrompt} = require("./given-or-tuple-prompt");
 
 /**
  * This is an extended Enquirer class, which takes the
@@ -19,6 +19,8 @@ class Enquirer extends Enquirer_ {
         this.register("plus:given-or-valid-number-input", GivenOrValidNumberInput);
         this.register("plus:given-or-select", GivenOrSelect);
         this.register("plus:given-or-boolean-select", GivenOrBooleanSelect);
+        this.register("plus:given-or-array", GivenOrArrayPrompt);
+        this.register("plus:given-or-tuple", GivenOrTuplePrompt);
     }
 }
 
@@ -28,6 +30,8 @@ Enquirer.GivenOrValidInput = GivenOrValidInput;
 Enquirer.GivenOrValidNumberInput = GivenOrValidNumberInput;
 Enquirer.GivenOrBooleanSelect = GivenOrBooleanSelect;
 Enquirer.GivenOrBaseTuplePrompt = GivenOrBaseTuplePrompt;
+Enquirer.GivenOrTuplePrompt = GivenOrTuplePrompt
 Enquirer.GivenOrBaseArrayPrompt = GivenOrBaseArrayPrompt;
+Enquirer.GivenOrArrayPrompt = GivenOrArrayPrompt;
 
 module.exports = Enquirer;
