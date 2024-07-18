@@ -11,9 +11,6 @@ const {Prompt} = require("enquirer");
 class GivenOrTuplePrompt extends Prompt {
     constructor({given, nonInteractive, ...options}) {
         super(options);
-        if (length !== undefined && (typeof length !== "number" || length < 0)) {
-            throw new Error(`Invalid length: ${length}`);
-        }
         this._given = given;
         this._nonInteractive = nonInteractive;
     }
@@ -62,6 +59,8 @@ class GivenOrTuplePrompt extends Prompt {
         this.submit();
         return this.value;
     }
+
+    async render() {}
 }
 
 module.exports = GivenOrTuplePrompt;
