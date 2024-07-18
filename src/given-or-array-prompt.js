@@ -7,17 +7,14 @@ const GivenOrBooleanSelect = require("./given-or-boolean-select");
  * more elements).
  */
 class GivenOrArrayPrompt extends Prompt {
-    constructor({length, argumentType, nonInteractive, ...options}) {
+    constructor({length, given, nonInteractive, ...options}) {
         super(options);
         if (length !== undefined && (typeof length !== "number" || length < 0)) {
             throw new Error(`Invalid length: ${length}`);
         }
-        if (!argumentType || Object.keys(argumentType).length === 0) {
-            throw new Error(`Missing or empty item argument type`);
-        }
+        this._given = given;
         this._length = length;
         this._nonInteractive = nonInteractive;
-        this._argumentType = argumentType;
     }
 
     async _apply(index, given) {
