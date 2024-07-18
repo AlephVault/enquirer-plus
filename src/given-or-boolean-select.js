@@ -10,7 +10,7 @@ class GivenOrBooleanSelect extends GivenOrSelect {
         ]});
     }
 
-    async result(v) {
+    async _convertOption(v) {
         return v === "true";
     }
 }

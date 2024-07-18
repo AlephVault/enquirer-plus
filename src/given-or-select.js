@@ -28,6 +28,16 @@ class GivenOrSelect extends enquirer.Select {
     }
 
     /**
+     * Properly converts an option after selection.
+     * @param v The option to convert.
+     * @returns {Promise<*>} The converted value (async function).
+     * @protected
+     */
+    async _convertOption(v) {
+        return v;
+    }
+
+    /**
      * Performs a select execution in 3 steps:
      * 1. If the given value was kept (i.e. valid among the options)
      *    then return it directly.
@@ -47,10 +57,10 @@ class GivenOrSelect extends enquirer.Select {
         }
 
         if (this._given !== undefined) {
-            return this._given;
+            return this._convertOption(this._given);
         }
         checkNotInteractive(!!this._nonInteractive);
-        return await super.run();
+        return await this._convertOption(super.run());
     }
 }
 
