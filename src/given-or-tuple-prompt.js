@@ -1,9 +1,8 @@
 const {Prompt} = require("enquirer");
 
 /**
- * This asks for a specified amount of elements, or
- * a dynamic one (until the users stops accepting
- * more elements).
+ * This prompt asks for a specified amount of elements,
+ * which might be of different types.
  *
  * This is abstract, and determining the specs of
  * the tuple prompt should never be asynchronous.
