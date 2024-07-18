@@ -98,3 +98,98 @@ Registered as `plus:given-or-boolean-select`, it allows users to ask a yes/no qu
 
 1. The `yes` and `no` options are configurable labels.
 2. The result is a boolean telling whether the first option (yes) was picked.
+
+## GivenOrArrayPrompt
+Registered as `plus:given-or-array`, it allows users to ask for an array of elements (typically, of the same type).
+An `applier` must be specified, which tells how to ask for each element.
+
+For example, to ask for an array of Foo/Bar/Baz elements (**any** prompt will do it), you'd use:
+
+```javascript
+const Enquirer = require(".");
+
+/**
+ * The applier can be asynchronous, and the index is
+ * typically given for message purposes only (it also
+ * reflects the amount of elements already processed).
+ * @param index The current index.
+ * @param given The given value for the item at the
+ * current index.
+ * @param nonInteractive Whether to force non-interactive
+ * (raising an error if the action becomes interactive).
+ * This flag should be passed directly to the options
+ * in all the prompts that allow it.
+ * @returns {Promise<*>} A value of the expected type
+ * (async function).
+ */
+async function someApplier(index, given, nonInteractive) {
+	return await new Enquirer.GivenOrSelect({
+		given, nonInteractive,
+		choices: ["Foo", "Bar", "Baz"],
+		message: `Element ${index}`
+	}).run();
+}
+
+class GivenOrSampleArrayPrompt extends Enquirer.GivenOrArrayPrompt {
+    constructor(options) {
+        super({applier: someApplier, ...options});
+    }
+}
+
+// Ask for an arbitrary amount of values, where the
+// user will need to confirm each time.
+// `given` can be specified (as an array of valid
+// items) to skip the input when already provided.
+await new GivenOrSampleArrayPrompt({
+	message: "Fill this array ('till you stop)"
+}).run();
+
+// Ask for a fixed amount of values.
+// `given` can be specified (as an array of valid
+// items) to skip the prompts when already provided.
+await new GivenOrSampleArrayPrompt({
+ 	message: "Fill this array (3 elements)", length: 3
+}).run();
+
+// Ask non-interactively for an amount of users.
+// `given` must be specified, and be an array of valid
+// items to avoid the prompts or an error will occur.
+await new GivenOrSampleArrayPrompt({
+	message: "Fill this array (non-interactive)", nonInteractive: true,
+	given: ["Foo", "Bar", "Baz", "Foo"]
+}).run();
+```
+
+Alternatively, you can define a subclass from `GivenOrBaseArrayPrompt`, implementing the `_apply`
+method directly (and having access to `._nonInteractive`):
+
+```javascript
+class GivenOrSampleArrayPrompt extends Enquirer.GivenOrBaseArrayPrompt {
+    constructor(options) {
+        super(options);
+    }
+    
+    _apply(index, given) {
+        return someApplier(index, given, this._nonInteractive);
+    }
+}
+```
+
+You should register your input using `new Enquirer().register(someKey, GivenOrSampleArrayPrompt)`.
+
+Alternatively, you can use `Enquirer.prompt()` directly:
+
+```javascript
+// E.g. for first case:
+await Enquirer.prompt([{
+    type: "plus:given-or-array", message: "Fill this array ('till you stop)",
+    applier: someApplier
+}]);
+```
+
+## GivenOrTuplePrompt
+Registered as `plus:given-or-tuple`, it allows users to ask for a compound type (it will be returned as an array).
+An `applier` must be specified, which tells how to ask for each member.
+
+For example, to ask for a (string, uint, bool) triple, you'd use:
+
