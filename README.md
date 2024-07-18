@@ -140,24 +140,24 @@ class GivenOrSampleArrayPrompt extends Enquirer.GivenOrArrayPrompt {
 // user will need to confirm each time.
 // `given` can be specified (as an array of valid
 // items) to skip the input when already provided.
-await new GivenOrSampleArrayPrompt({
+console.log(await new GivenOrSampleArrayPrompt({
 	message: "Fill this array ('till you stop)"
-}).run();
+}).run());
 
 // Ask for a fixed amount of values.
 // `given` can be specified (as an array of valid
 // items) to skip the prompts when already provided.
-await new GivenOrSampleArrayPrompt({
+console.log(await new GivenOrSampleArrayPrompt({
  	message: "Fill this array (3 elements)", length: 3
-}).run();
+}).run());
 
 // Ask non-interactively for an amount of users.
 // `given` must be specified, and be an array of valid
 // items to avoid the prompts or an error will occur.
-await new GivenOrSampleArrayPrompt({
+console.log(await new GivenOrSampleArrayPrompt({
 	message: "Fill this array (non-interactive)", nonInteractive: true,
 	given: ["Foo", "Bar", "Baz", "Foo"]
-}).run();
+}).run());
 ```
 
 Alternatively, you can define a subclass from `GivenOrBaseArrayPrompt`, implementing the `_apply`
@@ -181,10 +181,11 @@ Alternatively, you can use `Enquirer.prompt()` directly:
 
 ```javascript
 // E.g. for first case:
-await Enquirer.prompt([{
+console.log(await Enquirer.prompt([{
     type: "plus:given-or-array", message: "Fill this array ('till you stop)",
     applier: someApplier
-}]);
+}]));
+// use {someKey} instead of "plus:given-or-array" to use your custom class.
 ```
 
 ## GivenOrTuplePrompt
@@ -193,3 +194,106 @@ An `applier` must be specified, which tells how to ask for each member.
 
 For example, to ask for a (string, uint, bool) triple, you'd use:
 
+```javascript
+const Enquirer = require(".");
+
+/**
+ * The appliers can be asynchronous, and the index is
+ * typically given for message purposes only (it also
+ * reflects the amount of elements already processed).
+ * 
+ * Ensure you make use of `nonInteractive` or at least
+ * `given` (the index is optional) on each applier.
+ * 
+ * Each applier will be:
+ * @param index The current index.
+ * @param given The given value for the item at the
+ * current index.
+ * @param nonInteractive Whether to force non-interactive
+ * (raising an error if the action becomes interactive).
+ * This flag should be passed directly to the options
+ * in all the prompts that allow it.
+ * @returns {Promise<*>} A value of the expected type
+ * (async function).
+ */
+
+// This is an array of appliers.
+const APPLIERS = [
+   (index, given, nonInteractive) => given === undefined ? new Enquirer.Input({
+      given, nonInteractive,
+      message: `Element ${index} / foo`
+   }).run() : given,
+   (index, given, nonInteractive) => new Enquirer.GivenOrValidNumberInput({
+      given, integerOnly: true, allowHex: true, convert: "bigint",
+      nonInteractive, message: `Element ${index} / bar`
+   }).run(),
+   (index, given, nonInteractive) => new Enquirer.GivenOrBooleanSelect({
+      given, yes: "Yes", no: "No", nonInteractive,
+      message: `Element ${index} / baz`
+   }).run()
+];
+
+class GivenOrSampleTuplePrompt extends Enquirer.GivenOrTuplePrompt {
+   constructor(options) {
+      super({appliers: APPLIERS, ...options});
+   }
+}
+
+// Ask for the tuple data.
+console.log(await new GivenOrSampleTuplePrompt({
+   message: "Fill this tuple"
+}).run());
+
+// Ask non-interactively for the tuple data.
+// `given` must be specified, and be a tuple of valid
+// items to avoid the prompts or an error will occur.
+console.log(await new GivenOrSampleTuplePrompt({
+   message: "Fill this tuple (non-interactive)", nonInteractive: true,
+   given: ["Foo", "123", "true"]
+}).run());
+```
+
+Alternatively, you can define a subclass from `GivenOrBaseTuplePrompt`, implementing the `_apply`
+method directly (and having access to `._nonInteractive`):
+
+```javascript
+class GivenOrSampleTuplePrompt extends Enquirer.GivenOrBaseTuplePrompt {
+    constructor(options) {
+        super(options);
+    }
+    
+    async _apply(index, given) {
+        const nonInteractive = this._nonInteractive;
+        switch(index) {
+           case 0:
+               return given === undefined ? await new Enquirer.Input({
+                  given, nonInteractive,
+                  message: `Element ${index} / foo`
+               }).run() : given;
+           case 1:
+               return new Enquirer.GivenOrValidNumberInput({
+                   given, integerOnly: true, allowHex: true, convert: "bigint",
+                   nonInteractive, message: `Element ${index} / bar`
+               }).run();
+           default: // 2
+               return new Enquirer.GivenOrBooleanSelect({
+                   given, yes: "Yes", no: "No", nonInteractive,
+                   message: `Element ${index} / baz`
+               }).run();
+        }
+    }
+}
+```
+
+You should register your input using `new Enquirer().register(someKey, GivenOrSampleTuplePrompt)`.
+
+Alternatively, you can use `Enquirer.prompt()` directly:
+
+```javascript
+// E.g. for first case:
+console.log(await Enquirer.prompt([{
+    type: "plus:given-or-tuple", message: "Fill this tuple",
+    appliers: APPLIERS
+}]));
+// use {someKey} instead of "plus:given-or-tuple" to use your custom class.
+```
