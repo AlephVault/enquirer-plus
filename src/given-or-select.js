@@ -60,7 +60,7 @@ class GivenOrSelect extends enquirer.Select {
             return this._convertOption(this._given);
         }
         checkNotInteractive(!!this._nonInteractive);
-        return await this._convertOption(super.run());
+        return await this._convertOption(await super.run());
     }
 }
 
