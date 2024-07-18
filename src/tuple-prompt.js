@@ -30,7 +30,7 @@ class GivenOrTuplePrompt extends Prompt {
      */
     async _runFixed() {
         const elements = [];
-        for(let index = 0; index < this._length; index++) {
+        for(let index = 0; index < this._length(); index++) {
             const given_ = this._given ? this._given[index] : undefined;
             elements.push(await this._apply(index, given_));
         }
@@ -45,7 +45,7 @@ class GivenOrTuplePrompt extends Prompt {
         // an array-like element, unset it.
         if (this._given) {
             if (typeof this._given.length !== "number" || this._given.length !== length) {
-                console.error(`Invalid given value: ${this._given}`);
+                console.error(`Invalid given value: ${typeof this._given === "string" ? this._given : JSON.stringify(this._given)}`);
                 this._given = undefined;
             }
         }
