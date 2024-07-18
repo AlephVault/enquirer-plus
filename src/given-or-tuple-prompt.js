@@ -76,7 +76,7 @@ class GivenOrTuplePrompt extends GivenOrBaseTuplePrompt {
     }
 
     _apply(index, given) {
-        return this._applier(index, given);
+        return this._applier(index, given, this._nonInteractive);
     }
 }
 
