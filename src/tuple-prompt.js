@@ -9,12 +9,13 @@ const {Prompt} = require("enquirer");
  * the tuple prompt should never be asynchronous.
  */
 class GivenOrTuplePrompt extends Prompt {
-    constructor({given, ...options}) {
+    constructor({given, nonInteractive, ...options}) {
         super(options);
         if (length !== undefined && (typeof length !== "number" || length < 0)) {
             throw new Error(`Invalid length: ${length}`);
         }
         this._given = given;
+        this._nonInteractive = nonInteractive;
     }
 
     _length() {
