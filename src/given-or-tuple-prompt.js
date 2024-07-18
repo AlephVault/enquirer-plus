@@ -55,7 +55,7 @@ class GivenOrBaseTuplePrompt extends Prompt {
 
     async run() {
         this.value = await this._run();
-        this.submit();
+        await this.submit();
         return this.value;
     }
 

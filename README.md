@@ -183,7 +183,7 @@ Alternatively, you can use `Enquirer.prompt()` directly:
 // E.g. for first case:
 console.log(await Enquirer.prompt([{
     type: "plus:given-or-array", message: "Fill this array ('till you stop)",
-    applier: someApplier
+    applier: someApplier, name: "foo"
 }]));
 // use {someKey} instead of "plus:given-or-array" to use your custom class.
 ```
