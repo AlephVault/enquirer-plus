@@ -7,7 +7,7 @@ const {Prompt} = require("enquirer");
  * This is abstract, and determining the specs of
  * the tuple prompt should never be asynchronous.
  */
-class GivenOrTuplePrompt extends Prompt {
+class GivenOrBaseTuplePrompt extends Prompt {
     constructor({given, nonInteractive, ...options}) {
         super(options);
         this._given = given;
@@ -62,4 +62,4 @@ class GivenOrTuplePrompt extends Prompt {
     async render() {}
 }
 
-module.exports = GivenOrTuplePrompt;
+module.exports = GivenOrBaseTuplePrompt;

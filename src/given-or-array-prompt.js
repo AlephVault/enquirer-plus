@@ -6,7 +6,7 @@ const GivenOrBooleanSelect = require("./given-or-boolean-select");
  * or a dynamic one (until the users stops accepting
  * more elements).
  */
-class GivenOrArrayPrompt extends Prompt {
+class GivenOrBaseArrayPrompt extends Prompt {
     constructor({length, given, nonInteractive, ...options}) {
         super(options);
         if (length !== undefined && (typeof length !== "number" || length < 0)) {
@@ -106,4 +106,4 @@ class GivenOrArrayPrompt extends Prompt {
     async render() {}
 }
 
-module.exports = GivenOrArrayPrompt;
+module.exports = GivenOrBaseArrayPrompt;
