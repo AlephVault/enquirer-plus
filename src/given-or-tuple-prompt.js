@@ -67,16 +67,20 @@ class GivenOrBaseTuplePrompt extends Prompt {
  * as an argument.
  */
 class GivenOrTuplePrompt extends GivenOrBaseTuplePrompt {
-    constructor({applier, ...options}) {
+    constructor({appliers, ...options}) {
         super(options);
-        if (typeof applier !== "function") {
-            throw new Error("The applier must be a function");
+        if (!(appliers instanceof Array)) {
+            throw new Error("The appliers must be an array of functions");
         }
-        this._applier = applier;
+        this._appliers = appliers;
+    }
+
+    _length() {
+        return this._appliers.length;
     }
 
     _apply(index, given) {
-        return this._applier(index, given, this._nonInteractive);
+        return this._appliers[index](index, given, this._nonInteractive);
     }
 }
 
