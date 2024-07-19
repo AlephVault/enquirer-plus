@@ -37,16 +37,7 @@ class GivenOrSelect extends enquirer.Select {
         return v;
     }
 
-    /**
-     * Performs a select execution in 3 steps:
-     * 1. If the given value was kept (i.e. valid among the options)
-     *    then return it directly.
-     * 2. If nonInteractive is set, then raise an error since the
-     *    interactive mode was explicitly disabled.
-     * 3. Perform the usual Select logic.
-     * @returns {Promise<*>} The chosen option (async function).
-     */
-    async run() {
+    async _run() {
         if (this._given !== undefined && this._choices.every((o) => {
             return this._given !== o && this._given !== o.name;
         })) {
@@ -57,11 +48,25 @@ class GivenOrSelect extends enquirer.Select {
         }
 
         if (this._given !== undefined) {
-            return this._convertOption(this._given);
+            return await this._convertOption(this._given);
         }
         checkNotInteractive(!!this._nonInteractive);
         return await this._convertOption(await super.run());
     }
-}
+
+    /**
+     * Performs a select execution in 3 steps:
+     * 1. If the given value was kept (i.e. valid among the options)
+     *    then return it directly.
+     * 2. If nonInteractive is set, then raise an error since the
+     *    interactive mode was explicitly disabled.
+     * 3. Perform the usual Select logic.
+     * @returns {Promise<*>} The chosen option (async function).
+     */
+    async run() {
+        this.value = await this._run();
+        await this.submit();
+        return this.value;
+    }}
 
 module.exports = GivenOrSelect;
