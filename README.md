@@ -87,9 +87,15 @@ Registered as `plus:given-or-valid-input`, it allows users to perform the follow
 Registered as `plus:given-or-valid-number-input`, it allows users to perform an input flow considering all the
 same things in the previous section, but:
 
-1. The `validate` will be given. It will parse only _zero/positive_ numbers according to some configurations:
+1. The `validate` will be given. It will parse any number according to some configurations:
    1. If `integerOnly` option is set, only integer numbers will be allowed.
-   2. If `allowHex` option is set, hexadecimal numbers will be alternatively accepted (as integers).
+   2. If `allowHex` option is set, hexadescimal numbers will be alternatively accepted (as integers).
+2. The `convert` argument can state `"string"`, `"number"` or `"bigint"` constant, or a custom function
+   (which takes the string and converts it). This is a **mandatory** setting to determine the type
+   of the output.
+3. If `convert` is **not** `"string"`, then `min` and/or `max` can be specified to validate the range
+   of the input number. They're also properly converted using the same convert criterion that is used
+   to convert the value, and then properly compared to validate the number.
 
 This input is intended for numbers (not for hexadecimal-only inputs, for example) in particular.
 
