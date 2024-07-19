@@ -23,7 +23,6 @@ class GivenOrSelect extends enquirer.Select {
         super(options);
         this._given = (given !== undefined && given !== null) ? given.toString() : given;
         this._nonInteractive = nonInteractive;
-        this._choices = options.choices;
         this._onInvalidGiven = onInvalidGiven || ((v) => `Invalid input: ${v}`);
     }
 
@@ -38,7 +37,7 @@ class GivenOrSelect extends enquirer.Select {
     }
 
     async _run() {
-        if (this._given !== undefined && this._choices.every((o) => {
+        if (this._given !== undefined && this.choices.every((o) => {
             return this._given !== o && this._given !== o.name;
         })) {
             if (this._onInvalidGiven) {
