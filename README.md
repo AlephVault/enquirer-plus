@@ -5,7 +5,7 @@ Extensions over the enquirer library with some extended "maybe-interactive" prom
 Run this command to install it from NPM:
 
 ```shell
-npm install enquirer-plus@^1.2.2
+npm install enquirer-plus@^1.3.0
 ```
 
 # Usage
@@ -105,6 +105,9 @@ Registered as `plus:given-or-boolean-select`, it allows users to ask a yes/no qu
 1. The `yes` and `no` options are configurable labels.
 2. The result is a boolean telling whether the first option (yes) was picked.
 
+_Please note: It is not a select anymore, but just keeps the name for compatibility._
+_Please note: The "given" value can be true, false, "true" or "false", "t", "f", "yes", "no", "y", "n", "0", "1", 0 or 1._
+
 ## GivenOrArrayPrompt
 Registered as `plus:given-or-array`, it allows users to ask for an array of elements (typically, of the same type).
 An `applier` must be specified, which tells how to ask for each element.
@@ -193,6 +196,8 @@ console.log(await Enquirer.prompt([{
 }]));
 // use {someKey} instead of "plus:given-or-array" to use your custom class.
 ```
+
+_Please note: The "given" value can be an array or a JSON representation of an array_.
 
 ## GivenOrTuplePrompt
 Registered as `plus:given-or-tuple`, it allows users to ask for a compound type (it will be returned as an array).
@@ -303,3 +308,5 @@ console.log(await Enquirer.prompt([{
 }]));
 // use {someKey} instead of "plus:given-or-tuple" to use your custom class.
 ```
+
+_Please note: The "given" value can be an array or a JSON representation of an array_.
