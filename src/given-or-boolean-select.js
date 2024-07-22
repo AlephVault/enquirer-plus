@@ -1,17 +1,22 @@
-const GivenOrSelect = require("./given-or-select");
+const { BooleanPrompt } = require('enquirer');
 
 /**
  * A boolean Select prompt. The yes/no labels can be configured.
  */
-class GivenOrBooleanSelect extends GivenOrSelect {
-    constructor({yes, no, ...options}) {
-        super({...options, choices: [
-            {name: "true", message: yes || "Yes"}, {name: "false", message: no || "No"}
-        ]});
+class GivenOrBooleanSelect extends BooleanPrompt {
+    constructor({given, ...options}) {
+        super(options);
+        this._given = given;
     }
 
-    async _convertOption(v) {
-        return v === "true";
+    async run() {
+        if (this._given !== undefined) {
+            const value = !!this._given ? "t" : "f";
+            await this.dispatch(value);
+            return this.value;
+        } else {
+            await super.run();
+        }
     }
 }
 
