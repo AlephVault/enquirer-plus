@@ -1,6 +1,18 @@
 const {Prompt} = require("enquirer");
 const GivenOrBooleanSelect = require("./given-or-boolean-select");
 
+function maybeParseArray(given) {
+    if (given === undefined) return;
+
+    try {
+        let parsed = JSON.parse(given);
+        if (Object.getPrototypeOf(parsed) === Array.prototype) {
+            return parsed;
+        }
+    } catch(e) {}
+    return given;
+}
+
 /**
  * This prompt asks for a specified amount of elements,
  * or a dynamic one (until the users stops accepting
@@ -12,7 +24,7 @@ class GivenOrBaseArrayPrompt extends Prompt {
         if (length !== undefined && (typeof length !== "number" || length < 0)) {
             throw new Error(`Invalid length: ${length}`);
         }
-        this._given = given;
+        this._given = maybeParseArray(given);
         this._length = length;
         this._nonInteractive = nonInteractive;
     }
@@ -42,10 +54,12 @@ class GivenOrBaseArrayPrompt extends Prompt {
      * @protected
      */
     async _confirmNextElement() {
-        return new GivenOrBooleanSelect({
-            message: "Do you want to add another element?",
+        const confirm = await new GivenOrBooleanSelect({
+            message: "Do you want to add another element? (y/n)",
             nonInteractive: this._nonInteractive
         }).run();
+        console.log("confirmed:", confirm);
+        return confirm;
     }
 
     /**

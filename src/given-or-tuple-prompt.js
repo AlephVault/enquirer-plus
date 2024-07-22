@@ -1,5 +1,17 @@
 const {Prompt} = require("enquirer");
 
+function maybeParseArray(given) {
+    if (given === undefined) return;
+
+    try {
+        let parsed = JSON.parse(given);
+        if (Object.getPrototypeOf(parsed) === Array.prototype) {
+            return parsed;
+        }
+    } catch(e) {}
+    return given;
+}
+
 /**
  * This prompt asks for a specified amount of elements,
  * which might be of different types.
@@ -10,7 +22,7 @@ const {Prompt} = require("enquirer");
 class GivenOrBaseTuplePrompt extends Prompt {
     constructor({given, nonInteractive, ...options}) {
         super(options);
-        this._given = given;
+        this._given = maybeParseArray(given);
         this._nonInteractive = nonInteractive;
     }
 

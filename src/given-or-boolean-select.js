@@ -15,7 +15,7 @@ class GivenOrBooleanSelect extends BooleanPrompt {
             await this.dispatch(value);
             return this.value;
         } else {
-            await super.run();
+            return await super.run();
         }
     }
 }
