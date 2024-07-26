@@ -38,6 +38,9 @@ class GivenOrSelect extends enquirer.Select {
 
         if (this._given !== undefined) {
             this.value = this._given;
+            this.index = this.choices.findIndex((o) => {
+                return this._given === o || this._given === o.name;
+            });
             await this.submit();
             return this.value;
         }
